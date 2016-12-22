@@ -44,6 +44,30 @@ class GroupsController < ApplicationController
 
   end
 
+def join
+  @group = Group.find(find(params[:id])
+
+    if !current_user.is_member_of?(@group)
+      current_user.join!(@group)
+      flash[:notcie] = "欢迎加入本讨论版"
+    else
+      flash[:warning] = "你已经是本讨论版成员了!"
+    end
+
+    redirect_to groups_path(@group)
+end
+
+def quit
+  @group = Group.find(params[:id])
+
+  if current_user.is_member_of?(@group)
+    current_user.quit!(@group)
+    flash[:alert] = "已推出本讨论版！"
+  else
+    flash[:warning] = "你不是本讨论版成员，无需退出！"
+  end
+    redirect_to gruop_path(@group)
+end
 
 private
 
